@@ -1,5 +1,7 @@
 package com.ease.security.config.security;
 
+import java.io.Serial;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,6 +14,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class JwtCustomScurityConfigurer {
 
+    @Serial
+    private final Long serialVersionUID = 2L;
     private final UserDetailsService userDetailsService;
     private final JJWTTokenProvider jjwtTokenProvider;
     private AuthenticationManager authenticationManager;

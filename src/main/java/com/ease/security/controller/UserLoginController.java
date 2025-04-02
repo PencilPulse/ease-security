@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ease.security.config.security.jwtUtility.JJWTTokenProvider;
 import com.ease.security.service.UserAuthDetailService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,7 @@ public class UserLoginController {
 
  
     @PostMapping("/signin")
-    public ResponseEntity<Map<String, String>> login(HttpServletRequest request) {
+    public ResponseEntity<Map<String, String>> login(HttpServletRequest request) throws JsonProcessingException {
 
         String authHeader = request.getHeader("Authorization");
         log.info("Authorization header: {}", authHeader);

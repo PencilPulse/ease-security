@@ -55,32 +55,29 @@ public class LoginFilterConfig extends OncePerRequestFilter{
             return;
         }
 
-        UsernamePasswordAuthenticationToken usernamePasswordAuthnentication = null;
+        UsernamePasswordAuthenticationToken unpat = null;
         
         if(StringUtils.hasText(request.getParameter(USERNAME)) && StringUtils.hasText(request.getParameter(PASSWORD))){
-            usernamePasswordAuthnentication = new UsernamePasswordAuthenticationToken(request.getParameter(USERNAME), request.getParameter(PASSWORD));
+            unpat = new UsernamePasswordAuthenticationToken(request.getParameter(USERNAME), request.getParameter(PASSWORD));
         }
 
-        if(usernamePasswordAuthnentication == null){
-            usernamePasswordAuthnentication = getUsernamePasswordAuthenticationFromBasicAuth(request);
+        if(unpat == null){
+            unpat = getUsernamePasswordAuthenticationFromBasicAuth(request);
         }
-        if(usernamePasswordAuthnentication == null){
+        if(unpat == null){
             log.error("Invalid authentication token");
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid authentication token");
             return;
         }
         try {
-            Authentication authenticaion = authenticationManager.authenticate(usernamePasswordAuthnentication);
+            Authentication authenticaion = authenticationManager.authenticate(unpat);
             if(authenticaion == null){
                 log.error("Invalid Creadential provided");
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Creadential provided");
                 return;
             }
             SecurityContextHolder.getContext().setAuthentication(authenticaion);
-            String token = jjwtTokenProvider.generateJwtToken(authenticaion.getPrincipal().toString());
-            response.setHeader("Authorization", "Bearer " + token);
-            response.setHeader("Access-Control-Expose-Headers", "Authorization");
-            
+            log.info(AUTHORIZATION + " header: {}",authenticaion.getPrincipal().toString());
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             log.error("Authentication failed", e);
@@ -92,7 +89,7 @@ public class LoginFilterConfig extends OncePerRequestFilter{
     }
 
     private UsernamePasswordAuthenticationToken getUsernamePasswordAuthenticationFromBasicAuth(HttpServletRequest request){
-        UsernamePasswordAuthenticationToken usernamePasswordAuthnentication = null;
+        UsernamePasswordAuthenticationToken unpat = null;
         String authrization = request.getHeader(AUTHORIZATION);
 
         if(authrization == null){
@@ -131,8 +128,8 @@ public class LoginFilterConfig extends OncePerRequestFilter{
         }
         String username = basicAuthDecodedArray[0];
         String password = basicAuthDecodedArray[1];
-        usernamePasswordAuthnentication = new UsernamePasswordAuthenticationToken(username, password);
-        return usernamePasswordAuthnentication;
+        unpat = new UsernamePasswordAuthenticationToken(username, password);
+        return unpat;
     }
 
     @Override

@@ -25,7 +25,8 @@ public class ApiAuthorizationFilterConfiguratoin extends OncePerRequestFilter {
 
     private static final RequestMatcher REQUESTMATCHER = new NegatedRequestMatcher(new OrRequestMatcher(Arrays.asList(
             new AntPathRequestMatcher("/signin", "POST"), new AntPathRequestMatcher("/swagger-ui/**"),
-            new AntPathRequestMatcher("/v3/api-docs/**"), new AntPathRequestMatcher("/swagger-resources/**"))));
+            new AntPathRequestMatcher("/v3/api-docs/**"), new AntPathRequestMatcher("/swagger-resources/**"),
+            new AntPathRequestMatcher("/api/v1/user/onboard-users*"))));
 
     @Autowired
     private JJWTTokenProvider jwtTokenProvider;
@@ -37,7 +38,7 @@ public class ApiAuthorizationFilterConfiguratoin extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-       log.info("Inside ApiAuthorizationFilterConfiguratoin");
+        log.info("Inside ApiAuthorizationFilterConfiguratoin");
         String authHeader = request.getHeader("Authorization");
         String jwtToken = null;
         String paylod = null;
@@ -51,7 +52,7 @@ public class ApiAuthorizationFilterConfiguratoin extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 filterChain.doFilter(request, response);
             } else {
-               log.error("Request without jwt token");
+                log.error("Request without jwt token");
             }
         } catch (Exception e) {
             log.error("Invalid authentication token ", e);
@@ -60,7 +61,6 @@ public class ApiAuthorizationFilterConfiguratoin extends OncePerRequestFilter {
         }
 
     }
-
 
     @Override
     public boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
