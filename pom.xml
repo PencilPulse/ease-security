@@ -9,7 +9,7 @@
 		<version>3.4.4</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.springs</groupId>
+	<groupId>com.ease</groupId>
 	<artifactId>ease-security</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ease-security</name>
