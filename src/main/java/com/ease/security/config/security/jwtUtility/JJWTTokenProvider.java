@@ -49,9 +49,14 @@ public class JJWTTokenProvider {
 
     public String generateJwtToken(String subject) throws JsonProcessingException {
         UserAuthDetails userAuthDetails = userAuthDetailsDao.findByEmail(subject);
-        JwtTokenPayload jwtTokenPayload = new JwtTokenPayload(userAuthDetails.getId(), subject, "1", Arrays.asList("87329483972", "admin", "user","8372994367"));
+        JwtTokenPayload jwtTokenPayload = new JwtTokenPayload(userAuthDetails.getId(), subject, "ritu", Arrays.asList("87329483972", "admin", "user","8372994367"));
         String jsonStringPayload = new ObjectMapper().writeValueAsString(jwtTokenPayload);
-        return generateJwtToken(jsonStringPayload, 2);
+        return generateJwtToken(jsonStringPayload, 60*12);
+    }
+
+    public String generatePrivateJwtToken(JwtTokenPayload jwtTokenPayload) throws JsonProcessingException {
+        String jsonStringPayload = new ObjectMapper().writeValueAsString(jwtTokenPayload);
+        return generateJwtToken(jsonStringPayload, 5);
     }
 
     public String getSubjectFromToken(String token) {

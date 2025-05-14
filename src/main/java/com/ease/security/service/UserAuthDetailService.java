@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.ease.security.model.UserAuthDetails;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface UserAuthDetailService {
 
@@ -13,4 +14,5 @@ public interface UserAuthDetailService {
     public List<UserAuthDetails> getAllUsers();
     public void deleteUserById(UUID id);
 
+    public String initilizeSchemaafterSuccessfullSchemaCreation(String schemaName) throws JsonProcessingException;
 }

@@ -2,9 +2,13 @@ package com.ease.security.controller;
 
 import java.util.List;
 
+import com.ease.security.config.security.jwtUtility.JwtTokenPayload;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,7 +41,14 @@ public class UserDetailContrller {
     public ResponseEntity<UserAuthDetails> getUserByEmail(String email) {
         return new ResponseEntity<>(userAuthDetailsService.getUserByEmail(email), HttpStatus.OK);
     }
-    
+
+    @PostMapping("/initilze-schema")
+    public ResponseEntity<String> createSchemaInProfile() throws JsonProcessingException {
+        SecurityContext sch = SecurityContextHolder.getContext();
+        JwtTokenPayload jwtTokenPayload = (JwtTokenPayload) sch.getAuthentication().getDetails();
+        String msg = userAuthDetailsService.initilizeSchemaafterSuccessfullSchemaCreation(jwtTokenPayload.getTenantId());
+        return new ResponseEntity<>(msg, HttpStatus.CREATED);
+    }
 
     // @GetMapping("/getUserById/{id}")
     // public ResponseEntity<UserAuthDetails> getUserById(@PathVariable UUID id) {
