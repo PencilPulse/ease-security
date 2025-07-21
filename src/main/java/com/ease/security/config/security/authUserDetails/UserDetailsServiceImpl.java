@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class UserAuthService implements UserDetailsService{
+public class UserDetailsServiceImpl implements UserDetailsService{
     
     @Autowired
     UserAuthDetailsDao userAuthDetailsDao;
@@ -28,7 +28,6 @@ public class UserAuthService implements UserDetailsService{
         userDetails.setPassword(userAuthDetails.getPassword());
         userDetails.setUsername(username);
         return userDetails;
-
     }
 
     

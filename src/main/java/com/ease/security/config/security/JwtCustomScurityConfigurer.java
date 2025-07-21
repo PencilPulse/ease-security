@@ -1,6 +1,7 @@
 package com.ease.security.config.security;
 
 import java.io.Serial;
+import java.io.Serializable;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,7 +13,7 @@ import com.ease.security.config.security.jwtUtility.JJWTTokenProvider;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class JwtCustomScurityConfigurer {
+public class JwtCustomScurityConfigurer implements Serializable {
 
     @Serial
     private final Long serialVersionUID = 2L;
